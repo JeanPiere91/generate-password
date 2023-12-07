@@ -55,12 +55,77 @@ function getRandom(arr) {
   return randElement;
 }
 
+//Function to generate the password
+function generatePassword() {
+  //Grab the user options
+  var options = getPasswordOptions();
+
+  //Array to store the result
+  var result = [];
+
+  // Array to store possible characters
+  var possibleCharacters = [];
+
+  // Array to store guarenteed characters
+  var guaranteedCharacters = [];
+
+  // Check if the options exist
+  if (!options) return null;
+
+  if (options.hasEspecialCharacters 
+      || options.hasNumericCharacters
+      || options.hasLowerCaseCharacters
+      || options.hasUpperCaseCharacters ) {
+
+      // Add selected chars to an array of possible characters
+      if(options.hasEspecialCharacters) {
+        possibleCharacters = possibleCharacters.concat(specialCharacters);
+        guaranteedCharacters.push(getRandom(specialCharacters));
+      }
+
+      if(options.hasNumericCharacters) {
+        possibleCharacters = possibleCharacters.concat(numericCharacters);
+        guaranteedCharacters.push(getRandom(numericCharacters));
+      }
+
+      if(options.hasLowerCaseCharacters) {
+        possibleCharacters = possibleCharacters.concat(lowerCasedCharacters);
+        guaranteedCharacters.push(getRandom(lowerCasedCharacters));
+      }
+
+      if(options.hasUpperCaseCharacters) {
+        possibleCharacters = possibleCharacters.concat(upperCasedCharacters);
+        guaranteedCharacters.push(getRandom(upperCasedCharacters));
+      }
+
+    } else {
+      alert("Must be selected at least one character type !");
+      return null;
+    }
+
+  // Loop over the password length, selecting random indicies from the possible chards and adding them to the result array
+  for (var i = 0; i < options.length; i++) {
+    var possibleCharacter = getRandom(possibleCharacters);
+    result.push(possibleCharacter);
+  }
+  console.log(result);
+  console.log(guaranteedCharacters);
+  // Mix in at least one of the guaranteed chars in the result
+  for (var i = 0; i < guaranteedCharacters.length; i++) {
+    result[i] = guaranteedCharacters[i];
+  }
+
+  // Transform the result into a string and pass it into writePassword
+  return result.join(' ');
+}
+
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
 function writePassword() {
   var password = generatePassword();
+  console.log("Password : " + password);
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
